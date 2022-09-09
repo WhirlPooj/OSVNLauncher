@@ -1,0 +1,46 @@
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<External>null</External>
+	<External>nil</External>
+	<Item class="Workspace" referent="RBX0">
+		</Item>
+		<Item class="Script" referent="RBX2">
+			<Properties>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Joiner</string>
+				<string name="Source">
+
+local Client = Instance.new(&quot;NetworkClient&quot;, game)
+local Players = game.Players
+local Hostname = &quot;{}&quot;
+local ServerPort = 9090
+local ClientPort = 12345
+
+function showmsg(msg)
+    local hint = Instance.new(&quot;Hint&quot;, workspace)
+    hint.Text = &quot;[MSG]: &quot; .. msg
+end
+
+Client:Connect(Hostname, ServerPort, ClientPort)
+
+Client.ConnectionAccepted:connect(function(peer, repl)
+      local Num = Players.NumPlayers
+      Players:CreateLocalPlayer(Num)
+      repl:SendMarker()
+	  game:SetMessageBrickCount()
+	  repeat wait() until Players.LocalPlayer.Character ~= nil
+	  game:SetMessage(&quot;&quot;)
+end)
+
+Client.ConnectionFailed:connect(function(peer, c)
+        showmsg(&quot;Connection with &quot; .. peer .. &quot; failed. [CODE: &quot; .. c .. &quot;]&quot;)
+end)
+
+Client.ConnectionRejected:connect(function(peer)
+    showmsg(&quot;Connection with &quot; .. peer .. &quot; rejected.&quot;)
+end)</string>
+				<bool name="archivable">true</bool>
+			</Properties>
+		</Item>
+	</Item>
+</roblox>
